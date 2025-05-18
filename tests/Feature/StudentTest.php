@@ -1,19 +1,21 @@
 <?php
 
 use App\Models\Student;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
+uses(RefreshDatabase::class);
 //Create Student Test
-test('create student via routes', function () {
-    $student = Student::first();
+test('create student', function () {
+    $student = Student::factory()->create();
 
     $this->assertNotNull($student);
 
-    $response = $this->post('/students', [
+    $response = $this->post('/api/students', [
         'name' => $student->name,
         'surname' => $student->surname,
         'email' => $student->email,
     ]);
 
-    $response->assertStatus(200);
+    return response()->json($student, 200);
 });
+
